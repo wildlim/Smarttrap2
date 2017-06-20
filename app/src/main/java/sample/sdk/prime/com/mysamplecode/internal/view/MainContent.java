@@ -182,7 +182,7 @@ public class MainContent extends RelativeLayout {
         mHandler = null;
         super.onDetachedFromWindow();
     }
-    // sex sex
+    // sex sex sex
     private void updateVersion() {
         String version = null;
         if (mProduct != null) {
