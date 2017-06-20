@@ -46,6 +46,7 @@ import sample.sdk.prime.com.mysamplecode.R;
 import sample.sdk.prime.com.mysamplecode.internal.controller.DJISampleApplication;
 
 public class TrapList extends AppCompatActivity implements OnMapReadyCallback {
+    // 0620
     private static TextView mDataView;
     private static TextView mStatView;
     private static Button missionStartBtn;
