@@ -65,7 +65,7 @@ import static sample.sdk.prime.com.mysamplecode.R.*;
 import static sample.sdk.prime.com.mysamplecode.R.drawable.*;
 
 public class DroneMenuView extends LinearLayout implements OnMapReadyCallback {
-
+//0620
     private static TextView mDataView;
     private static TextView mStatView;
     private static Button missionStartBtn;
