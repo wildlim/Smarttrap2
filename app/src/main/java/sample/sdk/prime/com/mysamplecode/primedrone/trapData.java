@@ -2,6 +2,7 @@ package sample.sdk.prime.com.mysamplecode.primedrone;
 
 /**
  * Created by Ngtims-01 on 2017-04-27.
+--dev1--
  */
 
 public class trapData {
