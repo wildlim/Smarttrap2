@@ -1,0 +1,139 @@
+<?xml version="1.0" encoding="utf-8"?>
+<sample.sdk.prime.com.mysamplecode.internal.view.MainContent xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:orientation="vertical"
+    tools:context=".internal.controller.MainActivity"
+    android:clickable="true">
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical">
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_weight="6"
+            android:orientation="vertical" >
+            <TextView
+                android:id="@+id/text_connection_status"
+                android:layout_width="match_parent"
+                android:layout_height="0dp"
+                android:layout_weight="1"
+                android:gravity="center"
+                android:text="Status: No Product Connected"
+                android:textColor="@android:color/black"
+                android:textSize="20dp"
+                android:textStyle="bold"/>
+            <TextView
+                android:id="@+id/text_product_info"
+                android:layout_width="match_parent"
+                android:layout_height="0dp"
+                android:layout_weight="0.5"
+                android:text="@string/product_information"
+                android:textColor="@android:color/black"
+                android:textSize="20dp"
+                android:gravity="center"
+                android:textStyle="bold"
+                />
+            <TextView
+                android:id="@+id/text_model_available"
+                android:layout_width="match_parent"
+                android:layout_height="0dp"
+                android:layout_weight="1"
+                android:gravity="center"
+                android:textColor="@color/gray"
+                android:text="@string/model_not_available"
+                android:textSize="15dp"/>
+            <Button
+                android:id="@+id/btn_start"
+                android:layout_width="150dp"
+                android:layout_height="0dp"
+                android:layout_weight="1"
+                android:layout_gravity="center"
+                android:background="@drawable/my_button"
+                android:textAllCaps="true"
+                android:text="start"
+                android:textColor="@color/common_text_color"
+                android:textSize="15dp"
+                />
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="0dp"
+                android:layout_weight="1.5"/>
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_gravity="center"
+            android:layout_weight="4"
+            android:orientation="horizontal">
+
+            <ImageView
+                android:id="@+id/imageView"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_gravity="center"
+                android:layout_marginLeft="20dp"
+                android:layout_marginRight="20dp"
+                android:layout_weight="2"
+                android:paddingLeft="10dp"
+                android:paddingRight="10dp"
+                android:src="@drawable/logo" />
+
+            <ImageView
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_gravity="center"
+                android:layout_marginLeft="20dp"
+                android:layout_marginRight="20dp"
+                android:layout_weight="2"
+                android:paddingLeft="10dp"
+                android:paddingRight="10dp"
+                android:src="@drawable/dankook_logo" />
+
+        </LinearLayout>
+    </LinearLayout>
+    <!--<Button
+        android:id="@+id/btn_bridge"
+        android:layout_width="150dp"
+        android:layout_height="55dp"
+        android:layout_centerHorizontal="true"
+        android:layout_below="@+id/btn_bluetooth"
+        android:background="@drawable/round_btn"
+        android:textAllCaps="false"
+        android:layout_marginTop="25dp"
+        android:text="Bridge Mode"
+        android:textColor="@color/common_text_color"
+        android:textSize="15dp"
+    />
+
+    <Button
+        android:id="@+id/btn_open"
+        android:layout_width="150dp"
+        android:layout_height="55dp"
+        android:layout_centerHorizontal="true"
+        android:layout_below="@+id/btn_bridge"
+        android:background="@drawable/round_btn"
+        android:textAllCaps="false"
+        android:layout_marginTop="25dp"
+        android:text="Open"
+        android:textColor="@color/common_text_color"
+        android:textSize="15dp"
+    />-->
+
+    <!--<TextView
+        android:layout_below="@+id/btn_open"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="25dp"
+        android:textColor="@color/gray"
+        android:text="@string/sdk_version"
+        android:textSize="15dp"
+    />-->
+
+
+</sample.sdk.prime.com.mysamplecode.internal.view.MainContent>
