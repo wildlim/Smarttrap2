@@ -1,71 +1,51 @@
 package sample.sdk.prime.com.mysamplecode.primedrone;
 
-import android.app.Activity;
+import android.app.FragmentManager;
 import android.content.Context;
 import android.content.Intent;
-import android.graphics.drawable.Drawable;
 import android.os.AsyncTask;
-import android.os.Build;
-import android.os.Bundle;
 import android.os.Environment;
 import android.os.Handler;
 import android.os.Looper;
-import android.app.FragmentManager;
-import android.support.annotation.IdRes;
-import android.support.v4.app.Fragment;
-import android.support.v4.app.FragmentTransaction;
-import android.support.v4.content.ContextCompat;
-import android.support.v4.content.res.ResourcesCompat;
-import android.text.Html;
-import android.text.Layout;
+import android.support.v7.app.AppCompatActivity;
+import android.os.Bundle;
 import android.util.Log;
-import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.Button;
-import android.widget.LinearLayout;
 import android.widget.TableLayout;
 import android.widget.TableRow;
 import android.widget.TextView;
+import android.widget.Toast;
 
-import com.google.android.gms.maps.CameraUpdate;
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.MapFragment;
-import com.google.android.gms.maps.MapView;
 import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.model.LatLng;
-import com.google.android.gms.maps.model.MarkerOptions;
 
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
-import org.w3c.dom.Text;
 
 import java.io.BufferedReader;
 import java.io.BufferedWriter;
 import java.io.File;
-import java.io.FileDescriptor;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.InputStreamReader;
 import java.io.OutputStreamWriter;
-import java.io.PrintWriter;
 import java.io.Reader;
 import java.net.HttpURLConnection;
 import java.net.URL;
 import java.util.ArrayList;
-import java.util.List;
 import java.util.Timer;
 import java.util.TimerTask;
 
+import dji.sdk.base.BaseProduct;
 import sample.sdk.prime.com.mysamplecode.R;
-import sample.sdk.prime.com.mysamplecode.internal.controller.MainActivity;
+import sample.sdk.prime.com.mysamplecode.internal.controller.DJISampleApplication;
 
-import static sample.sdk.prime.com.mysamplecode.R.*;
-import static sample.sdk.prime.com.mysamplecode.R.drawable.*;
-
-public class DroneMenuView extends LinearLayout implements OnMapReadyCallback {
-
+public class TrapList extends AppCompatActivity implements OnMapReadyCallback {
     private static TextView mDataView;
     private static TextView mStatView;
     private static Button missionStartBtn;
@@ -80,22 +60,22 @@ public class DroneMenuView extends LinearLayout implements OnMapReadyCallback {
     phpdown taskData;
     String mData = "";
     String mVersion = "";
+    private BaseProduct mProduct;
 
-    GoogleMap map;
 
     @Override
-    public void onMapReady(GoogleMap map) {
-        map = this.map;
-        map.moveCamera(CameraUpdateFactory.newLatLng(new LatLng(37.56, 126.97)));
-        map.animateCamera(CameraUpdateFactory.zoomTo(10));
+    public void onMapReady(GoogleMap googleMap) {
+        googleMap.moveCamera(CameraUpdateFactory.newLatLng(new LatLng(37.56, 126.97)));
+        googleMap.animateCamera(CameraUpdateFactory.zoomTo(10));
     }
 
-    enum State { RUNNING, NONE, VERSION_CHECKED, SAVED, LOADED, TSP_COMPLETE };
+
+
+    enum State { RUNNING, NONE, VERSION_CHECKED, SAVED, LOADED};
     public static State state = State.NONE;
 
     public static void Load() {
         state = State.NONE;
-
     }
 
     ArrayList<Listitem> listitem = new ArrayList<Listitem>();
@@ -103,41 +83,34 @@ public class DroneMenuView extends LinearLayout implements OnMapReadyCallback {
     final String ADDR_LOADTRAP = "http://220.149.235.139/loadTrap.php";
     final String ADDR_LOADVER = "http://220.149.235.139/loadVer.php";
 
-    public DroneMenuView(Context context) {
-        super(context);
-        initView(context);
-    }
+    @Override
+    protected void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        setContentView(R.layout.activity_trap_list);
+        DJISampleApplication.getEventBus().register(this);
 
-    /*@Override
-    public boolean dispatchKeyEvent(KeyEvent event) {
-        if(event.getAction()==KeyEvent.ACTION_DOWN){
-            switch(event.getKeyCode()){
-                case KeyEvent.KEYCODE_BACK:
-                    this.onKeyEvent(event);
-                    break;
-            }
-        }
-        return super.dispatchKeyEvent(event);
-    }*/
 
-    private void initView(Context context){
-
-        final Context thisCon = context;
-
-        final LayoutInflater inflater = LayoutInflater.from(context);
-        View view = inflater.inflate(layout.activity_drone_menu_view, this);
-
-        mDataView = (TextView)findViewById(id.trapdatatext);
-        mStatView = (TextView)findViewById(id.statustext);
-        missionStartBtn = (Button)findViewById(id.btn_start);
-        tab_trap = (TableLayout)findViewById(id.tab_trap);
+        mDataView = (TextView)findViewById(R.id.trapdatatext);
+        mStatView = (TextView)findViewById(R.id.statustext);
+        missionStartBtn = (Button)findViewById(R.id.btn_start);
+        tab_trap = (TableLayout)findViewById(R.id.tab_trap);
         missionStartBtn.setEnabled(false);
+        FragmentManager fragmentManager = getFragmentManager();
+        MapFragment mapFragment = (MapFragment)fragmentManager.findFragmentById(R.id.mapFragment);
+        mapFragment.getMapAsync(this);
 
-
+        Load();
         //tab_trap.setVisibility(TableLayout.INVISIBLE);
 
         final Handler handler = new Handler(Looper.getMainLooper());
 
+        mProduct = DJISampleApplication.getProductInstance();
+        if(mProduct != null && mProduct.isConnected()){
+            Toast.makeText(this,"기기가 연결되었습니다.",Toast.LENGTH_LONG).show();
+        }
+        else if(mProduct == null){
+            Toast.makeText(this,"연결된 기기가 없습니다.",Toast.LENGTH_LONG).show();
+        }
         Timer timer = new Timer();
         timer.schedule(new TimerTask() {
             ArrayList<trapData> list = new ArrayList<trapData>();
@@ -196,16 +169,16 @@ public class DroneMenuView extends LinearLayout implements OnMapReadyCallback {
                                 tsplist = tsp.TSP(list);
                                 tspRoute = tsp.returnList(tsplist);
                                 Log.e("tsplist","tsp : "+tspRoute);
-                                addTableItem(thisCon ,tab_trap,tspRoute);
+                                addTableItem(TrapList.this ,tab_trap,tspRoute);
                                 mDataView.setText("Sorting Success");
                                 mStatView.setText("\n데이터 불러오기에 성공하였습니다.");
                                 missionStartBtn.setEnabled(true);
-                                missionStartBtn.setOnClickListener(new OnClickListener() {
+                                missionStartBtn.setOnClickListener(new View.OnClickListener() {
                                     @Override
                                     public void onClick(View view) {
-                                        Intent intent = new Intent(thisCon,missionView.class);
+                                        Intent intent = new Intent(TrapList.this,missionView.class);
                                         intent.putExtra("tspRoute",tspRoute);
-                                        thisCon.startActivity(intent);
+                                        startActivity(intent);
                                     }
                                 });
                             }
@@ -217,22 +190,6 @@ public class DroneMenuView extends LinearLayout implements OnMapReadyCallback {
         }, 1000, 1000);
     }
 
-
-    public String stringTransform(String str){
-        String routeStr = "<Trap 방문 순서>\n";
-        String strArr[] = str.split("[,]");
-        for(int i=0;i<strArr.length;i++){
-            if(i==0){
-                routeStr+="출발점 : "+ strArr[i];
-            }
-            else
-            routeStr+=i+"번째 순서 : "+"trap id = "+strArr[i];
-            if(i!=strArr.length-1){
-                routeStr+="\n";
-            }
-        }
-        return routeStr;
-    }
     public void addTableItem(Context con, TableLayout table, String str){
         String strArr[] = str.split("[,]");
         String data = loadDataFile(dbpath+dbFilePath);
@@ -243,12 +200,9 @@ public class DroneMenuView extends LinearLayout implements OnMapReadyCallback {
         tableRow = new TableRow(con);
         tableRow.setLayoutParams(new TableLayout.LayoutParams(TableLayout.LayoutParams.MATCH_PARENT, TableLayout.LayoutParams.MATCH_PARENT));
         for (int l = 0; l < start.length; l++) {
-            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
-                startText = new TextView(con,null,0,style.table_item);
-                startText.setText(start[l]);
-                tableRow.addView(startText);
-            }
-
+            startText = new TextView(con,null,0, R.style.table_item);
+            startText.setText(start[l]);
+            tableRow.addView(startText);
         }
         table.addView(tableRow);
         for(int i=1;i<strArr.length;i++){
@@ -259,7 +213,7 @@ public class DroneMenuView extends LinearLayout implements OnMapReadyCallback {
                     tableRow = new TableRow(con);
                     tableRow.setLayoutParams(new TableLayout.LayoutParams(TableLayout.LayoutParams.MATCH_PARENT, TableLayout.LayoutParams.MATCH_PARENT));
                     for(int k=0;k<dataItem.length;k++){
-                        text = new TextView(con,null,0, style.table_item);
+                        text = new TextView(con,null,0, R.style.table_item);
                         if(k == 0){
                             text.setText(""+i);
                             tableRow.addView(text);
@@ -453,7 +407,7 @@ public class DroneMenuView extends LinearLayout implements OnMapReadyCallback {
 
                 Log.e("test","version: " + mVersion);
 
-               // taskData = new phpdown();
+                // taskData = new phpdown();
                 //taskData.execute(ADDR_LOADTRAP);
             }
         }

@@ -93,7 +93,7 @@
         <activity
             android:name=".primedrone.missionView"
             android:screenOrientation="landscape" />
-        <activity android:name=".primedrone.TrapList"></activity>
+        <activity android:name=".primedrone.TrapList" />
     </application>
 
 </manifest>
