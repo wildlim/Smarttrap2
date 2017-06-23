@@ -29,6 +29,7 @@ import dji.sdk.products.Aircraft;
 import dji.sdk.sdkmanager.BluetoothProductConnector;
 import dji.sdk.sdkmanager.DJISDKManager;
 import sample.sdk.prime.com.mysamplecode.primedrone.DroneMenuView;
+import sample.sdk.prime.com.mysamplecode.primedrone.TrapList;
 import sample.sdk.prime.com.mysamplecode.primedrone.getsetState;
 
 
@@ -38,9 +39,10 @@ import sample.sdk.prime.com.mysamplecode.primedrone.getsetState;
 public class MainContent extends RelativeLayout {
 
     public static final String TAG = MainContent.class.getName();
-
+    Context thisCon;
     public MainContent(Context context, AttributeSet attrs) {
         super(context, attrs);
+        thisCon = context;
     }
 
     private TextView mTextConnectionStatus;
@@ -85,11 +87,12 @@ public class MainContent extends RelativeLayout {
             @Override
             public void onClick(View view) {
                 if (GeneralUtils.isFastDoubleClick()) return;
-                DroneMenuView.Load();
+                /*DroneMenuView.Load();
                 DJISampleApplication.getEventBus()
                         .post(new ViewWrapper(new DroneMenuView(getContext()),
-                                R.string.activity_start_menu));
-
+                                R.string.activity_start_menu));*/
+                Intent intent = new Intent(thisCon, TrapList.class);
+                thisCon.startActivity(intent);
             }
         });
 

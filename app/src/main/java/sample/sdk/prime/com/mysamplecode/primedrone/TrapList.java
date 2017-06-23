@@ -34,6 +34,7 @@ import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.InputStreamReader;
 import java.io.OutputStreamWriter;
+import java.io.PrintWriter;
 import java.io.Reader;
 import java.net.HttpURLConnection;
 import java.net.URL;
@@ -42,6 +43,7 @@ import java.util.Timer;
 import java.util.TimerTask;
 
 import dji.sdk.base.BaseProduct;
+import sample.sdk.prime.com.mysamplecode.Manifest;
 import sample.sdk.prime.com.mysamplecode.R;
 import sample.sdk.prime.com.mysamplecode.internal.controller.DJISampleApplication;
 
@@ -51,10 +53,12 @@ public class TrapList extends AppCompatActivity implements OnMapReadyCallback {
     private static TextView mStatView;
     private static Button missionStartBtn;
     private static TableLayout tab_trap;
-    String ext = Environment.getExternalStorageState();
-    String rootdir = Environment.getDataDirectory().getAbsolutePath();
-    String cachedir = Environment.getDownloadCacheDirectory().getAbsolutePath();
-    String dbpath = Environment.getExternalStorageDirectory().getAbsolutePath()+"/trapdb";
+
+
+    //String ext = Environment.getExternalStorageState();
+    //String rootdir = Environment.getDataDirectory().getAbsolutePath();
+    //String cachedir = Environment.getDownloadCacheDirectory().getAbsolutePath();
+    String dbpath = Environment.getExternalStorageDirectory().getAbsolutePath() + "/trapdb";
     String dbFilePath = "/trapdb.txt";
 
     phpdown taskVer;
@@ -66,8 +70,12 @@ public class TrapList extends AppCompatActivity implements OnMapReadyCallback {
 
     @Override
     public void onMapReady(GoogleMap googleMap) {
-        googleMap.moveCamera(CameraUpdateFactory.newLatLng(new LatLng(37.56, 126.97)));
-        googleMap.animateCamera(CameraUpdateFactory.zoomTo(10));
+        double lat = 37.322758;
+        double lon = 127.244406;
+        Log.e("location", "latitude : "+lat+",  longitude : "+lon);
+        LatLng point = new LatLng(lat,lon);
+        googleMap.moveCamera(CameraUpdateFactory.newLatLng(point));
+        googleMap.animateCamera(CameraUpdateFactory.zoomTo(17));
     }
 
 
