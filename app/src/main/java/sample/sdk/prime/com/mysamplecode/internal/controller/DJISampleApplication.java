@@ -7,6 +7,8 @@ import android.os.Looper;
 import android.support.v4.content.ContextCompat;
 import android.util.Log;
 import android.widget.Toast;
+
+import dji.sdk.camera.Camera;
 import sample.sdk.prime.com.mysamplecode.R;
 import com.squareup.otto.Bus;
 import com.squareup.otto.ThreadEnforcer;
@@ -168,5 +170,20 @@ public class DJISampleApplication extends Application {
     };
 
     public static class ConnectivityChangeEvent {
+    }
+    public static synchronized Camera getCameraInstance() {
+
+        if (getProductInstance() == null) return null;
+
+        Camera camera = null;
+
+        if (getProductInstance() instanceof Aircraft){
+            camera = ((Aircraft) getProductInstance()).getCamera();
+
+        } else if (getProductInstance() instanceof HandHeld) {
+            camera = ((HandHeld) getProductInstance()).getCamera();
+        }
+
+        return camera;
     }
 }

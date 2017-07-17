@@ -79,10 +79,8 @@
             android:screenOrientation="landscape"
             android:theme="@style/AppTheme">
             <intent-filter>
-
                 <!-- <action android:name="android.hardware.usb.action.USB_ACCESSORY_ATTACHED" /> -->
                 <action android:name="android.intent.action.MAIN" />
-
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
 
@@ -92,7 +90,9 @@
         </activity>
         <activity
             android:name=".primedrone.missionView"
-            android:screenOrientation="landscape" />
+            android:screenOrientation="landscape"
+            android:theme="@style/AppTheme.NoActionBar"
+            />
         <activity android:name=".primedrone.TrapList" />
     </application>
 

@@ -4,9 +4,11 @@ import android.app.FragmentManager;
 import android.content.Context;
 import android.content.Intent;
 import android.os.AsyncTask;
+import android.os.Build;
 import android.os.Environment;
 import android.os.Handler;
 import android.os.Looper;
+import android.support.annotation.RequiresApi;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
@@ -89,7 +91,6 @@ public class TrapList extends AppCompatActivity implements OnMapReadyCallback {
         setContentView(R.layout.activity_trap_list);
         DJISampleApplication.getEventBus().register(this);
 
-
         mDataView = (TextView)findViewById(R.id.trapdatatext);
         mStatView = (TextView)findViewById(R.id.statustext);
         missionStartBtn = (Button)findViewById(R.id.btn_start);
@@ -169,7 +170,9 @@ public class TrapList extends AppCompatActivity implements OnMapReadyCallback {
                                 tsplist = tsp.TSP(list);
                                 tspRoute = tsp.returnList(tsplist);
                                 Log.e("tsplist","tsp : "+tspRoute);
-                                addTableItem(TrapList.this ,tab_trap,tspRoute);
+                                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+                                    addTableItem(TrapList.this ,tab_trap,tspRoute);
+                                }
                                 mDataView.setText("Sorting Success");
                                 mStatView.setText("\n데이터 불러오기에 성공하였습니다.");
                                 missionStartBtn.setEnabled(true);
@@ -178,6 +181,7 @@ public class TrapList extends AppCompatActivity implements OnMapReadyCallback {
                                     public void onClick(View view) {
                                         Intent intent = new Intent(TrapList.this,missionView.class);
                                         intent.putExtra("tspRoute",tspRoute);
+                                        Log.e("wtf",tspRoute);
                                         startActivity(intent);
                                     }
                                 });
@@ -190,6 +194,7 @@ public class TrapList extends AppCompatActivity implements OnMapReadyCallback {
         }, 1000, 1000);
     }
 
+    @RequiresApi(api = Build.VERSION_CODES.LOLLIPOP)
     public void addTableItem(Context con, TableLayout table, String str){
         String strArr[] = str.split("[,]");
         String data = loadDataFile(dbpath+dbFilePath);
